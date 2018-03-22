@@ -24,7 +24,7 @@ train_y = houses_df[[target_column]].iloc[:n_train, :].as_matrix()
 test_X = houses_df[predictor_columns].iloc[-n_test:, :].as_matrix()
 test_y = houses_df[[target_column]].iloc[-n_test:, :].as_matrix()
 
-print("{} records split into {} for learning and {} for testing\n".format(n_records, n_train, n_test))
+print("{} records split into {} for training and {} for testing\n".format(n_records, n_train, n_test))
 
 linReg = LinRegressor()
 linReg.fit(train_X, train_y)
