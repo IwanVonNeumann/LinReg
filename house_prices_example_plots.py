@@ -1,11 +1,10 @@
 import os
+
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 
-from collections import OrderedDict
 from lin_regressor import LinRegressor
-from errors import relative_error, mean_relative_error
 
 data_dir = "data"
 data_file_name = "house_prices.csv"
@@ -28,33 +27,30 @@ test_y = houses_df[[target_column]].iloc[-n_test:, :].as_matrix()
 
 linReg = LinRegressor()
 linReg.fit(train_X, train_y)
-predicted_y = linReg.predict(test_X)
-predicted_train_y = linReg.predict(train_X)
 
-relative_errors = relative_error(test_y, predicted_y)
 
-summary_df = pd.DataFrame(OrderedDict((
-    (target_column, test_y.ravel()),
-    ("Predicted", predicted_y.ravel()),
-    ("Relative error", relative_errors.ravel())
-)))
+def plot_dimension(plot_df, dimension, subplot):
+    dimension_df = plot_df[[dimension, target_column, "Predicted"]].sort_values(by=[dimension])
 
-# TODO fix!!!
-plot_X = test_X[:10, 0].ravel()  # OverallQual
-plot_y = test_y[:10, :].ravel()
+    line_X = [dimension_df[dimension].iloc[0], dimension_df[dimension].iloc[-1]]
+    line_y = [dimension_df["Predicted"].iloc[0], dimension_df["Predicted"].iloc[-1]]
 
-plot_X.sort()
-plot_y.sort()
+    subplot.plot(line_X, line_y, linewidth=2.0)
+    subplot.plot(dimension_df[dimension], dimension_df[target_column], 'bo')
+    subplot.title("{} / price".format(dimension))
 
-print(plot_X)
-print(plot_y)
 
-y_ = linReg.predict(test_X[:10])
+plot_sample_size = 20
 
-line_X = [plot_X[0], plot_X[-1]]
-line_y = [y_[0], y_[-1]]
+plot_X = test_X[:plot_sample_size]
+plot_y = test_y[:plot_sample_size]
+plot_y_predicted = linReg.predict(plot_X)
 
-plt.plot(line_X, line_y, linewidth=2.0)
-plt.plot(plot_X, plot_y, 'bo')
-# plt.axis([0, n + 1, 0, f(n + 1) + 1])
+plot_sample = np.concatenate((plot_X, plot_y, plot_y_predicted), axis=1)
+plot_df = pd.DataFrame(data=plot_sample, columns=predictor_columns + [target_column, "Predicted"])
+
+for i, dimension in enumerate(predictor_columns):
+    plt.subplot(2, 3, i + 1)
+    plot_dimension(plot_df, dimension, plt)
+
 plt.show()
