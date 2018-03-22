@@ -6,7 +6,7 @@ from lin_regressor import LinRegressor
 from errors import relative_error, mean_relative_error
 
 data_dir = "data"
-data_file_name = "houses.csv"
+data_file_name = "house_prices.csv"
 data_file_path = os.path.join(data_dir, data_file_name)
 
 houses_df = pd.read_csv(data_file_path)
