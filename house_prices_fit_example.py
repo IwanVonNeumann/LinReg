@@ -1,9 +1,8 @@
 import os
-import random
-import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 
+from collections import OrderedDict
+from errors import Errors
 from lin_regressor import LinRegressor
 
 data_dir = "data"
@@ -12,22 +11,35 @@ data_file_path = os.path.join(data_dir, data_file_name)
 
 houses_df = pd.read_csv(data_file_path)
 
-# print(houses_df.shape)
-
-# print(houses_df.head())
-
-selected_columns = ["OverallQual", "OverallCond", "GrLivArea", "GarageCars", "YearBuilt", "TotRmsAbvGrd"]
+predictor_columns = ["OverallQual", "OverallCond", "GrLivArea", "GarageCars", "YearBuilt", "TotRmsAbvGrd"]
 target_column = "SalePrice"
-
-houses_df = houses_df[selected_columns + [target_column]].copy()
-
-print(houses_df.head())
 
 n_records = houses_df.shape[0]
 n_train = int(n_records * 0.9)
 n_test = int(n_records * 0.1)
 
-# print(n_records, n_train, n_test)
+train_X = houses_df[predictor_columns].iloc[:n_train, :].as_matrix()
+train_y = houses_df[[target_column]].iloc[:n_train, :].as_matrix()
 
-train_df = houses_df[:n_train]
-test_df = houses_df[-n_test:]
+test_X = houses_df[predictor_columns].iloc[-n_test:, :].as_matrix()
+test_y = houses_df[[target_column]].iloc[-n_test:, :].as_matrix()
+
+print("{} records split into {} for learning and {} for testing\n".format(n_records, n_train, n_test))
+
+linReg = LinRegressor()
+linReg.fit(train_X, train_y)
+predicted_y = linReg.predict(test_X)
+predicted_train_y = linReg.predict(train_X)
+
+relative_errors = Errors.relative_error(test_y, predicted_y)
+
+summary_df = pd.DataFrame(OrderedDict((
+    (target_column, test_y.ravel()),
+    ("Predicted", predicted_y.ravel()),
+    ("Relative error", relative_errors.ravel())
+)))
+
+print(summary_df.head(10))
+print()
+print("Mean relative error for train data:\t{:.4f}".format(Errors.mean_relative_error(train_y, predicted_train_y)))
+print("Mean relative error for test data:\t{:.4f}".format(Errors.mean_relative_error(test_y, predicted_y)))
