@@ -1,9 +1,9 @@
 import os
 import pandas as pd
 
-from collections import OrderedDict
+from houses_plots import plot_by_dimensions
+from houses_stats import calculate_stats
 from lin_regressor import LinRegressor
-from errors import relative_error, mean_relative_error
 
 data_dir = "data"
 data_file_name = "house_prices.csv"
@@ -31,15 +31,5 @@ linReg.fit(train_X, train_y)
 predicted_y = linReg.predict(test_X)
 predicted_train_y = linReg.predict(train_X)
 
-relative_errors = relative_error(test_y, predicted_y)
-
-summary_df = pd.DataFrame(OrderedDict((
-    (target_column, test_y.ravel()),
-    ("Predicted", predicted_y.ravel()),
-    ("Relative error", relative_errors.ravel())
-)))
-
-print(summary_df.head(10))
-print()
-print("Mean relative error for train data:\t{:.4f}".format(mean_relative_error(train_y, predicted_train_y)))
-print("Mean relative error for test data:\t{:.4f}".format(mean_relative_error(test_y, predicted_y)))
+calculate_stats(test_y, predicted_y, train_y, predicted_train_y, target_column)
+plot_by_dimensions(test_X, test_y, predicted_y, predictor_columns, target_column)
