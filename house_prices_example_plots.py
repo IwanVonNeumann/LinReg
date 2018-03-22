@@ -27,6 +27,7 @@ test_y = houses_df[[target_column]].iloc[-n_test:, :].as_matrix()
 
 linReg = LinRegressor()
 linReg.fit(train_X, train_y)
+predicted_y = linReg.predict(test_X)
 
 
 def plot_dimension(plot_df, dimension, subplot):
@@ -40,14 +41,9 @@ def plot_dimension(plot_df, dimension, subplot):
     subplot.title("{} / price".format(dimension))
 
 
-plot_sample_size = 20
-
-plot_X = test_X[:plot_sample_size]
-plot_y = test_y[:plot_sample_size]
-plot_y_predicted = linReg.predict(plot_X)
-
-plot_sample = np.concatenate((plot_X, plot_y, plot_y_predicted), axis=1)
-plot_df = pd.DataFrame(data=plot_sample, columns=predictor_columns + [target_column, "Predicted"])
+plot_data = np.concatenate((test_X, test_y, predicted_y), axis=1)
+plot_df_columns = predictor_columns + [target_column, "Predicted"]
+plot_df = pd.DataFrame(data=plot_data, columns=plot_df_columns).sample(40, random_state=0)
 
 for i, dimension in enumerate(predictor_columns):
     plt.subplot(2, 3, i + 1)
