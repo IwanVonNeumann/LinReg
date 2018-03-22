@@ -2,8 +2,8 @@ import os
 import pandas as pd
 
 from collections import OrderedDict
-from errors import Errors
 from lin_regressor import LinRegressor
+from errors import relative_error, mean_relative_error
 
 data_dir = "data"
 data_file_name = "houses.csv"
@@ -31,7 +31,7 @@ linReg.fit(train_X, train_y)
 predicted_y = linReg.predict(test_X)
 predicted_train_y = linReg.predict(train_X)
 
-relative_errors = Errors.relative_error(test_y, predicted_y)
+relative_errors = relative_error(test_y, predicted_y)
 
 summary_df = pd.DataFrame(OrderedDict((
     (target_column, test_y.ravel()),
@@ -41,5 +41,5 @@ summary_df = pd.DataFrame(OrderedDict((
 
 print(summary_df.head(10))
 print()
-print("Mean relative error for train data:\t{:.4f}".format(Errors.mean_relative_error(train_y, predicted_train_y)))
-print("Mean relative error for test data:\t{:.4f}".format(Errors.mean_relative_error(test_y, predicted_y)))
+print("Mean relative error for train data:\t{:.4f}".format(mean_relative_error(train_y, predicted_train_y)))
+print("Mean relative error for test data:\t{:.4f}".format(mean_relative_error(test_y, predicted_y)))
