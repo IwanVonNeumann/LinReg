@@ -17,6 +17,6 @@ class LinRegressor(object):
 
     @staticmethod
     def __prepend_unit_column(X):
-        n = X.shape[0]
-        unit_column = [[1]] * n
+        h, _ = X.shape
+        unit_column = np.full((h, 1), 1)
         return np.append(unit_column, X, axis=1)
