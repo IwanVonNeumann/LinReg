@@ -6,10 +6,10 @@ from lin_regressor import LinRegressor
 
 
 def f(x):
-    return 2 + 1.5 * x
+    return 2 + 1.2 * x
 
 
-n = 5
+n = 7
 r = range(1, n + 1)
 X = list(r)
 y = [f(x) + random.uniform(-1, 1) for x in r]
