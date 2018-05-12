@@ -2,7 +2,7 @@ import random
 import matplotlib.pyplot as plt
 import numpy as np
 
-from lin_regressor import LinearRegression
+from lin_regression import LinearRegression
 
 
 def f(x):
