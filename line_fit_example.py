@@ -2,7 +2,7 @@ import random
 import matplotlib.pyplot as plt
 import numpy as np
 
-from lin_regressor import LinRegressor
+from lin_regressor import LinearRegression
 
 
 def f(x):
@@ -17,7 +17,7 @@ y = [f(x) + random.uniform(-1, 1) for x in r]
 X = np.array([X]).transpose()
 y = np.array([y]).transpose()
 
-linReg = LinRegressor()
+linReg = LinearRegression()
 
 linReg.fit(X, y)
 print(linReg.weights)

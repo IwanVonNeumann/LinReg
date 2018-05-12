@@ -1,7 +1,7 @@
 import numpy as np
 
 
-class LinRegressor(object):
+class LinearRegression(object):
     weights = None
 
     def fit(self, X, y):
