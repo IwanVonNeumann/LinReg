@@ -1,8 +1,11 @@
 import random
+
 import matplotlib.pyplot as plt
 import numpy as np
 
 from lin_regression import LinearRegression
+
+random.seed(1)
 
 
 def f(x):
@@ -20,7 +23,7 @@ y = np.array([y]).transpose()
 linReg = LinearRegression()
 
 linReg.fit(X, y)
-print(linReg.weights)
+print(linReg.coef_)
 
 r_ = range(0, n + 2)
 X_ = np.array([r_]).transpose()
