@@ -35,4 +35,4 @@ predicted_y = lin_reg.predict(test_X)
 predicted_train_y = lin_reg.predict(train_X)
 
 calculate_stats(test_y, predicted_y, train_y, predicted_train_y, target_column)
-# plot_by_dimensions(linReg, test_X, test_y, predicted_y, predictor_columns, target_column)
+# plot_by_dimensions(lin_reg, test_X, test_y, predicted_y, predictor_columns, target_column)
