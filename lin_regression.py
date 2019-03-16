@@ -17,6 +17,6 @@ class LinearRegression(object):
 
     @staticmethod
     def __prepend_unit_column(X):
-        h, _ = X.shape
-        unit_column = np.full((h, 1), 1)
+        n, _ = X.shape
+        unit_column = np.ones(shape=(n, 1))
         return np.append(unit_column, X, axis=1)
